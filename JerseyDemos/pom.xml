@@ -13,6 +13,18 @@
             <layout>default</layout>
         </repository>
     </repositories>
+    <distributionManagement>
+       <repository>
+       <id>internal</id>
+       <name>Internal Release</name>
+       <url>http://localhost:8081/nexus/content/repositories</url>
+       </repository>
+	   <snapshotRepository>
+	      <id>nexus-snapshots</id>
+	      <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+	   </snapshotRepository>
+	</distributionManagement>
+    
     <properties>
         <jersey2.version>2.19</jersey2.version>
         <jaxrs.version>2.0.1</jaxrs.version>
@@ -70,4 +82,32 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+    	<profile>
+    	  <id>releases</id>
+    	  <build>
+			<plugins>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.5.1</version>
+					<executions>
+						<execution>
+						 <id>default-deploy</id>
+						 <phase>deploy</phase>
+						 <goals>
+						 	<goal>deploy</goal>
+						 </goals>
+						</execution>
+					</executions>
+					<configuration>
+						<serverId>nexus-releases</serverId>
+						<nexusUrl>http://localhost:8081/nexus/</nexusUrl>
+						<skipStaging>true</skipStaging>
+					</configuration>
+				</plugin>
+			</plugins>    	  
+    	  </build>
+    	</profile>
+    </profiles>
 </project>
